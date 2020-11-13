@@ -1,6 +1,8 @@
 
 # A simple Node CLI command
 
+NOTE: It does say to store the json results, but I forgot and now I'm getting 429, so sorting by yeast is due, but no time left
+
 ## How to use and install
 
 1. Clone the repo
