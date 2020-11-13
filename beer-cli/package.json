@@ -1,0 +1,17 @@
+{
+  "name": "beer-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "beer": "./bin/index.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.0"
+  }
+}
