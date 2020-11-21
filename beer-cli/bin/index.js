@@ -1,6 +1,16 @@
 #!/usr/bin/env node
 const axios = require("axios");
 
+// --| Set colours name
+const ConsoleColor =
+{
+    ResetDefault: '\x1b[0m',
+    Yellow: '\x1b[33m',
+    Red: '\x1b[31m',
+    Blue: '\x1b[34m',
+    Green: '\x1b[32m',
+};
+
 // --| ---------------------------------------------------------
 // --| I also installed the following in the same folder path:
 // --| npm install -g .
@@ -8,7 +18,7 @@ const axios = require("axios");
 // --| ---------------------------------------------------------
 
 // --| If the command doesn't contain maximum 2 parameters such as min and max, exit
-if (process.argv.length !== 4)
+if(process.argv.length !== 4)
 {
     console.log("🍺 Please provide the necessary parameters for ABV searching: min and max values!");
     process.exit(1);
@@ -19,7 +29,7 @@ const args = process.argv.slice(2);
 
 // --| Show a small info of how to use the cli if there are no numbers specified as min and max
 // --| We let the min to be equal to 0 if the user wants
-if (isNaN(args[0]) || isNaN(args[1]) || parseFloat(args[0]) < 0 || parseFloat(args[1]) <= 0)
+if(isNaN(args[0]) || isNaN(args[1]) || parseFloat(args[0]) < 0 || parseFloat(args[1]) <= 0)
 {
     console.log("🍺 Parameters min and max must contain a positive number value for ABV searching!");
     process.exit(1);
@@ -28,13 +38,13 @@ if (isNaN(args[0]) || isNaN(args[1]) || parseFloat(args[0]) < 0 || parseFloat(ar
 axios.get(`https://api.punkapi.com/v2/beers?abv_gt=${args[0]}&abv_lt=${args[1]}`).then((response) =>
 {
     // --| If results are empty, warn the user in console
-    if (response.data === undefined || response.data.length === 0)
+    if(response.data === undefined || response.data.length <= 0)
     {
         console.log("🍺 No results found from your search values...");
         process.exit(1);
     }
 
-    // --| Sorty yeast and we get the array below
+    // --| Sort by yeast and we get the array below
     /*
         [
             'Champagne',
@@ -86,8 +96,18 @@ axios.get(`https://api.punkapi.com/v2/beers?abv_gt=${args[0]}&abv_lt=${args[1]}`
             Beer Malts: Pale Ale, Crystal 150, Caramalt, Carafa Special Malt Type 1, Carafa Special Malt Type 3
         */
 
-        // --| Log the result
-        console.log(`🍺 Beer info: (Yeast: \x1b[33m${item.ingredients.yeast}\x1b[0m)\nBeer name: \x1b[31m${item.name}\x1b[0m\nBeer image URL: \x1b[34m${item.image_url}\x1b[0m\nBeer Description: \x1b[32m${item.description}\x1b[0m\nBeer tagline: \x1b[33m${item.tagline}\x1b[0m\nBeer Hops:\x1b[32m ${BeerHop.join(", ").replace(/(?:\r\n|\r|\n)/g, "")}\x1b[0m\nBeer Malts:\x1b[32m ${BeerMalts.join(", ").replace(/(?:\r\n|\r|\n)/g, "")}\x1b[0m \n\n`);
+        // --| Regex in there is just to replace empty, unknown spaces and new lines from API mistakes (if any)
+        // --| Added some sanitization + better reading?
+        const ResponseOutput = `🍺 Beer info: (Yeast: ${ConsoleColor.Yellow}${(item.ingredients.yeast.length > 0) ? item.ingredients.yeast.trim() : "Unknown"}${ConsoleColor.ResetDefault})
+                                Beer name: ${ConsoleColor.Red}${(item.name.length > 0) ? item.name.trim() : "Unknown Name"}${ConsoleColor.ResetDefault}
+                                Beer image URL: ${ConsoleColor.Blue}${(item.image_url.length) > 0 ? item.image_url.trim() : "Missing URL"}${ConsoleColor.ResetDefault}
+                                Beer Description: ${ConsoleColor.Green}${(item.description.length > 0) ? item.description.trim() : "Unknown Description"}${ConsoleColor.ResetDefault}
+                                Beer tagline: ${ConsoleColor.Yellow}${(item.tagline.length > 0) ? item.tagline.trim() : "Unknown Tagline"}${ConsoleColor.ResetDefault}
+                                Beer Hops: ${ConsoleColor.Green}${(BeerHop.length > 0) ? BeerHop.join(", ").replace(/(?:\r\n|\r|\n)/g, "") : "No hops"}${ConsoleColor.ResetDefault}
+                                Beer Malts: ${ConsoleColor.Green}${(BeerMalts.length > 0) ? BeerMalts.join(", ").replace(/(?:\r\n|\r|\n)/g, "") : "No malts"}${ConsoleColor.ResetDefault}\n\n`;
+
+        // --| Log the result and also remove spaces in template literal (but keep new line breaks) because it messes with indentation in console
+        console.log(ResponseOutput.replace(/^\x20+|\x20+$/gm, ""));
     });
 
 }).catch((err) =>
