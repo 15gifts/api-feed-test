@@ -1,8 +1,8 @@
-const axios = require('axios');
-const args = process.argv.slice(2);
-let min = -1;
-let max = 0;
-args.forEach(e=>{
+const axios = require('axios'); // used to execute HTTP requests
+const args = process.argv.slice(2); // used to get all arguments starting from the third, as the first two are the paths
+let min = -1; // variable min
+let max = 0; // variable max
+args.forEach(e=>{ // read each argument to check if it has --min or --max to parse the value to int
     if(e.includes('--min=')){
         min = e.replace('--min=', '');
     } else if(e.includes('--max=')){
@@ -11,10 +11,10 @@ args.forEach(e=>{
     
 });
 
-min = parseInt(min, 10);
-max = parseInt(max, 10);
+min = parseFloat(min); // parsing to Float
+max = parseFloat(max); // parsing to Float
 
-if(min < 0){
+if(min < 0){ //
     console.log('Min should be equals or greater than 0.');
     return;
 } else if(isNaN(min)){
