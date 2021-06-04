@@ -1,0 +1,14 @@
+{
+  "name": "test-beer",
+  "version": "1.0.0",
+  "description": "a program that generates a list of beers, grouped by their yeast.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fernando Amatuzzi",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
