@@ -27,7 +27,7 @@ if(min < 0){
 } else {
     axios.get(`https://api.punkapi.com/v2/beers?abv_gt=${min}&abv_lt=${max}`)
     .then(function (response) {
-        //TODO sort beers by yeast
+        //TODO group beers by yeast
         const beers = response.data;
         beers.forEach(b=>{
             console.log({
