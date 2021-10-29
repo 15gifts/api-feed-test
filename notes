@@ -1,0 +1,12 @@
+Using perlbrew with Perl version 5.30.2.
+
+Run script:
+    perl get-beers.pl <min_abv> <max_abv>
+
+I spent too long trying to get the request to work in my script; I eventually learnt that 'User-Agent' => 'curl/7.68.0' gave me permission to access the URL.
+
+I would like to have split some of the code into a package and written tests for it.
+
+The script also lacks a lot of error handling (e.g. what if no arguments provided?)
+
+I didn't have time to group beers by their yeast.
